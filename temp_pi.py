@@ -24,7 +24,8 @@ while True: #boucle sans fin
             temperature = float(out_mesure[i+2:]) / 1000
     
     # on écrit la date + la mesure dans le fichier de log                            
-    with open('/var/www/html/index.html', 'a') as f1:
-        f1.write(str(out_date.rstrip()) + " : " + str(temperature) + '<br>')
-    
+    #with open('/var/www/html/index.html', 'a') as f1:
+    #    f1.write(str(out_date.rstrip()) + " : " + str(temperature) + '<br>')
+    with open('/var/log/temPi.log', 'a') as f1:
+        f1.write(str(out_date.rstrip()) + " : " + str(temperature))
     time.sleep(120)
