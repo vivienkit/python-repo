@@ -1,3 +1,8 @@
+# script python qui scrute une entrée numérique et compte les fronts montants 
+# pendant 15minutes. A l'origine pour compter le nombre de fois qu'une LED
+# s'allume sur la carte HNC0037 (Lumiplan, carte de chaînage vidéo)
+# auteur : vivien, décembre 2017
+
 import time
 import subprocess
 from RPi import GPIO
