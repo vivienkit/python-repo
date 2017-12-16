@@ -6,7 +6,7 @@ nbre=0
 
 GPIO.setmode(GPIO.BCM)
 GPIO.setup(b1, GPIO.IN, pull_up_down=GPIO.PUD_DOWN)
-GPIO.add_event_detect(b1, GPIO.RISING)
+GPIO.add_event_detect(b1, GPIO.RISING, bouncetime=10)
 
 proc = subprocess.Popen(['date +"%D-%T"'], stdout=subprocess.PIPE, shell=True)
 (out_date, err) = proc.communicate()
