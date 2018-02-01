@@ -1,2 +1,2 @@
 # python-repo
-programs in Python
+scipts in Python or in bash shell
