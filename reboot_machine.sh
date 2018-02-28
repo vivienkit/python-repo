@@ -28,8 +28,8 @@ for i in `seq 1 $nrs`; do
   gpio write 0 1 # alim ON
   echo "`$heure` : boot start" >> $log
   sleep $boot_time
-  test_ping=$(ping -n -c 1 $IP -W 1 | grep "0 received") > /dev/null
-  if [[ $test_ping = "" ]]; then 
+  test_ping=$(ping -n -c 1 $IP -W 1 | grep "1 received") > /dev/null
+  if [[ $test_ping != "" ]]; then 
 	echo "`$heure` : OK La machine testée a correctement booté" >> $log
 	((OK+=1))
 	else 
