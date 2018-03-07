@@ -3,13 +3,13 @@
 ###### Initialisation des variables ######
 
 # IP de la machine à tester
-IP='192.168.100.88'
+IP='192.168.100.86'
 # temps en s au bout duquel la machine testée doit avoir booté
 boot_time=80
 # temps de pause entre 2 reboots
 wait_time=10
 # variable nrs -> nbre de reboots souhaités
-nrs=2
+nrs=2000
 # date/heure formattée pour entrée log
 heure1="date +'%D-%H.%M.%S'"
 # date/heure formattée pour nom de fichier
@@ -43,10 +43,16 @@ log_serial()
 	pkill ttylog
 }
 
+# fonction pour afficher les résultats en temps réel sur afficheur LCD 16x2
+affichage()
+{	python /home/pi/i2c_lcd/write2lcd.py $1 $2
+}
+
 echo "`$heure1` : Démarrage du script" >> $log_machine
 
 for i in `seq 1 $nrs`
 do
+  affichage $i $NOK
   gpio write 0 1
   echo "`$heure1` : boot start" >> $log_machine
   log_serial $boot_time
