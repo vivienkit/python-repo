@@ -5,7 +5,7 @@
 # IP de la machine à tester
 IP='192.168.100.86'
 # temps en s au bout duquel la machine testée doit avoir booté
-boot_time=80
+boot_time=40
 # temps de pause entre 2 reboots
 wait_time=10
 # variable nrs -> nbre de reboots souhaités
@@ -58,13 +58,13 @@ do
   echo "`$heure1` : boot start" >> $log_machine
   log_serial $boot_time
 #  sleep $boot_time
-  test_ping=$(ping -n -c 1 $IP -W 1 | grep "0 received") > /dev/null
+  test_ping=$(ping -n -c 1 $IP -W 1 | grep "0 received") #> /dev/null
   if [[ $test_ping = "" ]]
    then 
-	 echo "`$heure1` : OK La machine testée a correctement booté" >> $log_machine
+	 echo "`$heure1` : OK La machine testée a correctement booté" #>> $log_machine
 	 ((OK+=1))
 	 else 
-	 echo "`$heure1` : NOK boot FAIL ! see $log_serial" >> $log_machine
+	 echo "`$heure1` : NOK boot FAIL ! see $logDir/fail_boot_`date +%Hh%M`.txt" #>> $log_machine
 	 cp $log_temp $logDir/fail_boot_`date +%Hh%M`.txt
 	 ((NOK+=1))
   fi
