@@ -40,6 +40,7 @@ chmod +rw /dev/ttyUSB0
 log_serial()
 {	ttylog -b 115200 -d /dev/ttyUSB0 > $log_temp &
 	sleep $1
+  echo "j'ai attendu $1 s"
 	pkill ttylog
 }
 
@@ -59,13 +60,13 @@ do
 #  sleep $boot_time
   test_ping=$(ping -n -c 1 $IP -W 1 | grep "0 received") > /dev/null
   if [[ $test_ping = "" ]]
-    then 
-	echo "`$heure1` : OK La machine testée a correctement booté" >> $log_machine
-	((OK+=1))
-	else 
-	echo "`$heure1` : NOK boot FAIL ! see $log_serial" >> $log_machine
-	cp $log_temp $logDir/fail_boot_`date +%Hh%M`.txt
-	((NOK+=1))
+   then 
+	 echo "`$heure1` : OK La machine testée a correctement booté" >> $log_machine
+	 ((OK+=1))
+	 else 
+	 echo "`$heure1` : NOK boot FAIL ! see $log_serial" >> $log_machine
+	 cp $log_temp $logDir/fail_boot_`date +%Hh%M`.txt
+	 ((NOK+=1))
   fi
   gpio write 0 0
   sleep $wait_time
