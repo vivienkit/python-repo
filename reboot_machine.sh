@@ -5,7 +5,7 @@
 # IP de la machine à tester
 IP='192.168.100.86'
 # temps en s au bout duquel la machine testée doit avoir booté
-boot_time=40
+boot_time=80
 # temps de pause entre 2 reboots
 wait_time=10
 # variable nrs -> nbre de reboots souhaités
@@ -18,6 +18,8 @@ heure2="date +'%Hh%M'"
 OK=0
 # nbre de boots ratés
 NOK=0
+# adaptateur USB <-> RS232
+adapt=`ls /dev | grep ttyUSB`
 
 ##########  fichiers de logs #########
 # répertoire des logs
@@ -34,14 +36,13 @@ gpio mode 0 output
 gpio write 0 0
 
 # initialisation de l'adaptateur RS232/USB
-chmod +rw /dev/ttyUSB0
+chmod +rw $adapt
 
 # fonction pour logguer la sortie console de l'équipement en cas de non démarrage
 log_serial()
-{	ttylog -b 115200 -d /dev/ttyUSB0 > $log_temp &
+{	ttylog -b 115200 -d $adapt > $log_temp &
 	sleep $1
-  echo "j'ai attendu $1 s"
-	pkill ttylog
+  pkill ttylog
 }
 
 # fonction pour afficher les résultats en temps réel sur afficheur LCD 16x2
@@ -61,10 +62,10 @@ do
   test_ping=$(ping -n -c 1 $IP -W 1 | grep "0 received") #> /dev/null
   if [[ $test_ping = "" ]]
    then 
-	 echo "`$heure1` : OK La machine testée a correctement booté" #>> $log_machine
+	 echo "`$heure1` : OK La machine testée a correctement booté" >> $log_machine
 	 ((OK+=1))
 	 else 
-	 echo "`$heure1` : NOK boot FAIL ! see $logDir/fail_boot_`date +%Hh%M`.txt" #>> $log_machine
+	 echo "`$heure1` : NOK boot FAIL ! see $logDir/fail_boot_`date +%Hh%M`.txt" >> $log_machine
 	 cp $log_temp $logDir/fail_boot_`date +%Hh%M`.txt
 	 ((NOK+=1))
   fi
